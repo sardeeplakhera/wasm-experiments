@@ -1,0 +1,46 @@
+<html>
+    <head>
+    <style>
+        @keyframes spinner {
+            to {transform: rotate(360deg);}
+        }
+        
+        .spinner:before {
+            content: '';
+            box-sizing: border-box;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            margin-top: -50px;
+            margin-left: -50px;
+            border-radius: 50%;
+            border: 10px solid #f6f;
+            border-top-color: #0e0;
+            border-right-color: #0dd;
+            border-bottom-color: #f90;
+            animation: spinner .6s linear infinite;
+        }
+    </style>
+    <script>
+        var Module = {
+            "onRuntimeInitialized": function () {
+                Module.reserveMemory(200);
+                console.log("module init");
+                document.body.className = "";
+            }
+        }
+    </script>
+        <script type="application/javascript" src="testDataStore.js"></script>
+        <script type="application/javascript" src="index.js"></script>
+    </head>
+    <body class="spinner">
+        <div id="input">
+            <label for="imageLoader">Load Images(5MB encoded and 50MB decoded put into bitmap cache)</label>
+            <input name="imageLoader" id="imageLoader" type="number" onchange="loadImages();"/>
+        </div>
+        <div id="info"></div>
+        <div id="result"></div>
+    </body>
+</html>
