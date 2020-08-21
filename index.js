@@ -62,5 +62,5 @@ function loadImages() {
             failure = true;
         }
         logToInfo(allocStatus);
-    }, 200)
+    }, 2000)
 }
