@@ -36,17 +36,17 @@ function loadImages() {
         }
         logMemoryStatus();
         logBitmapCacheStatus();
-        if (Module.reservedMemory() == 0 && tryThrice > 0) {
-            tryThrice = tryThrice - 1;
-            logToInfo("WILL ATTEMPT AUTO RESERVE MEMORY");
-            try {
-                Module.autoReserveMemory();
-            } catch {
-                logToInfo("AUTO RESERVE MEMORY THROW");
-                Module.resetFreeReserveMemoryFlag();
-            }
-            logToInfo("AUTO RESERVE MEMORY " + Module.reservedMemory());
-        }
+        // if (Module.reservedMemory() == 0 && tryThrice > 0) {
+        //     tryThrice = tryThrice - 1;
+        //     logToInfo("WILL ATTEMPT AUTO RESERVE MEMORY");
+        //     try {
+        //         Module.autoReserveMemory();
+        //     } catch {
+        //         logToInfo("AUTO RESERVE MEMORY THROW");
+        //         Module.resetFreeReserveMemoryFlag();
+        //     }
+        //     logToInfo("AUTO RESERVE MEMORY " + Module.reservedMemory());
+        // }
         var res = false;
         try {
             res = Module.allocateImage();
@@ -62,5 +62,26 @@ function loadImages() {
             failure = true;
         }
         logToInfo(allocStatus);
-    }, 2000)
+    }, 200)
+}
+
+var attempt = 1;
+const maxAttempts = 5;
+function reserveMemoryFromJS()
+{
+    // if (Module.reservedMemory() == 0 && attempts > 0) {
+    console.log("Sardeep: current attempt = ", attempt);
+    if (attempt <= maxAttempts) {
+        logToInfo("WILL ATTEMPT AUTO RESERVE MEMORY");
+        try {
+            Module.autoReserveMemory(attempt);
+            attempt = 1;
+        } catch {
+            logToInfo("AUTO RESERVE MEMORY THROW");
+            Module.resetFreeReserveMemoryFlag();
+            attempt = attempt + 1;
+            reserveMemoryFromJS();
+        }
+        logToInfo("AUTO RESERVE MEMORY " + Module.reservedMemory());
+    }
 }
