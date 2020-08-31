@@ -99,5 +99,4 @@ function deleteDB()
 
         console.log(event.result); // should be undefined
     };
-};
 }
